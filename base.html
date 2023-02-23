@@ -1,0 +1,110 @@
+{% load static %}
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static 'adminka/main.css' %}">
+{% if title %}
+	<title>Turing Test - {{ title }} </title>
+{% else %}
+	<title>Turing Test</title>
+{% endif %}
+</head>
+<body>
+
+	<header class="site-header">
+  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+    <div class="container">
+      <a class="navbar-brand mr-4" href="/">Turing Test</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+
+        <!-- Navbar Right Side -->
+        <div class="navbar-nav">
+            {% if user.is_authenticated  %}
+                <a class="nav-item nav-link" href="{% url 'admin:index' %}">Admin Page</a>
+                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-item nav-link" href="{% url 'register' %}">Register (U/A)</a>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+</header>
+
+	<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-8">
+      {%if messages %}
+       {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+       {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %}
+        {% if user.is_authenticated  %}
+<p>
+    <div class="vertical-center" align="left">
+
+        <p><h3 align="left">Выгрузить данные по результатам:</h3></p>
+        <p><h4 align="left">XLS:</h4></p>
+        <a class="btn btn-primary" href="export_dialogs_xls" role="button">Все диалоги </a> <br>
+        <a class="btn btn-primary" href="export_bots_misrecognized_xls" role="button">Статистика ботов</a> <br>
+        <a class="btn btn-primary" href="export_humans_misrecognized_xls" role="button">Статистика волонтёров</a> <br>
+        <a class="btn btn-primary" href="export_testers_and_chats_xls" role="button">Пользователи и чаты</a>  <br>
+        <a class="btn btn-primary" href="export_xls" role="button">Все данные</a> <br>
+        <br>
+        <p><h4 align="left">CSV:</h4></p>
+        <a class="btn btn-primary" href="export_dialogs" role="button">Все диалоги </a> <br>
+        <a class="btn btn-primary" href="export_bots_misrecognized" role="button">Статистика ботов</a> <br>
+        <a class="btn btn-primary" href="export_humans_misrecognized" role="button">Статистика волонтёров</a> <br>
+        <a class="btn btn-primary" href="export_testers_and_chats" role="button">Пользователи и чаты</a>  <br>
+        <a class="btn btn-primary" href="export" role="button">Все данные</a>
+        <br><br>
+        <p><h3 align="left">Статус бота:</h3></p>
+
+        <form method="GET" action="{% url 'status' %}">
+
+        <div class="form-row">
+            <div class="form-group col-12">
+                <div class="input-group">
+                    <input class="form-control py-2 border-right-0 border" type="search" name="bot_id" placeholder="введите UUID бота..." />
+                    <span class="input-group-append">
+                        <div class="input-group-text bg-transparent">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </span>
+                </div>
+            </div>        
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить запрос</button>
+        </form>
+        
+</p>
+
+
+
+
+{% endif %}
+    </div>
+  </div>
+</main>
+
+	<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
